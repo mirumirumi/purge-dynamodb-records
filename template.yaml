@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: purge-dynamodb-records
+
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    AllowedValues:
+      - dev
+      - stg
+      - prd
+
+
+Globals:
+  Function:
+    MemorySize: 256
+    Timeout: 13
+
+
+Resources:
+  PutFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/lambda/purge-dynamodb-records/
+      Handler: bootstrap.is.the.handler
+      Runtime: provided.al2
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          ENV_NAME: !Ref EnvironmentName
